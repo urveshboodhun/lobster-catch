@@ -1,3 +1,15 @@
+A fun interactive mini-game built with React + Vite + Tailwind. 
+Click lobsters as they appear across a responsive PEI map. 
+Features animations, ocean wave background, and automatic Vercel deployments.
+
+https://lobster-catch.vercel.app/
+
+Lobster Catch — React, TypeScript, Tailwind, Vercel (2025)
+• Built a game-like interactive map experience with animated waves, responsive UI, and click mechanics.
+• Implemented custom spawning logic, timed interactions, and polished animations.
+• Deployed on Vercel with CI/CD via GitHub.
+<img width="889" height="595" alt="Screen Shot 2025-12-10 at 1 25 49 PM" src="https://github.com/user-attachments/assets/9638fa07-53c0-4d89-95bb-a2fb3db1ea81" />
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
