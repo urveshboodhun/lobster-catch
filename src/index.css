@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes wave {
+    0% { background-position: 0 0; }
+    100% { background-position: 1000px 0; }
+}
+.ocean-waves {
+    background: url('./assets/wave-pattern.png');
+    background-repeat: repeat; /* repeat in all directions */
+    background-size: 300px 300px; /* tile size — adjust to taste */
+    animation: wave 20s linear infinite;
+    opacity: 0.3;
+  }
+  
+  

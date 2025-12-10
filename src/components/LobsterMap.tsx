@@ -56,29 +56,33 @@ export default function LobsterMap({
   };
 
   return (
-    <div className="relative w-full max-w-xl mx-auto select-none">
-      {/* Map background */}
-      {/* <img
-        src="../assets/pei-map.png"
-        alt="PEI Map"
-        className="w-full pointer-events-none"
-      /> */}
-      <img src={peiMap} className="w-full" />
+<div className="relative w-full max-w-xl mx-auto aspect-[2/1] overflow-hidden rounded-xl shadow-lg">
 
-      {/* Lobster */}
-      {visible && spot && (
-        <div
-          className="absolute text-5xl cursor-pointer animate-bounce transition-transform active:scale-75"
-          style={{
-            top: spot.top,
-            left: spot.left,
-            transform: "translate(-50%, -50%)", // center icon on spot
-          }}
-          onClick={ handleCatch }
-        >
-          🦞
-        </div>
-      )}
-    </div>
+{/* Ocean wave background */}
+<div className="absolute inset-0 ocean-waves"></div>
+
+{/* PEI map */}
+<img
+  src={peiMap}
+  alt="PEI Map"
+  className="relative z-10 w-full h-full object-contain pointer-events-none"
+/>
+
+{/* Lobster icon */}
+{visible && spot && (
+  <div
+    className="absolute z-20 text-5xl cursor-pointer animate-bounce"
+    style={{
+      top: spot.top,
+      left: spot.left,
+      transform: "translate(-50%, -50%)",
+    }}
+    onClick={handleCatch}
+  >
+    🦞
+  </div>
+)}
+</div>
+
   );
 }
