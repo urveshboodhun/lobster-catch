@@ -24,7 +24,7 @@ function App() {
         Catch a Lobster
       </button>
       <p className="mt-6 text-sm text-gray-500">
-        Made with 🦞 in PEI
+        Made with 🦞 in PEI 🇨🇦
       </p>
     </div>
   );
