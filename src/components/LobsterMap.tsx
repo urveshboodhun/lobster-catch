@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import peiMap from "../assets/pei-map.png";
 
-<img src={peiMap} className="w-full" />
-
-
-interface Spot {
+interface SpotType {
   top: string;
   left: string;
+  id: number;
 }
 
-// Pre-selected coordinates roughly around PEI’s coastline
-const lobsterSpots: Spot[] = [
+const lobsterSpots = [
   { top: "32%", left: "38%" },
   { top: "28%", left: "55%" },
   { top: "45%", left: "30%" },
@@ -20,69 +17,78 @@ const lobsterSpots: Spot[] = [
   { top: "22%", left: "48%" },
 ];
 
-export default function LobsterMap({
-  count,
-  setCount,
-}: {
-  count: number;
-  setCount: (n: number) => void;
-}) {
-  const [spot, setSpot] = useState<Spot | null>(null);
-  const [visible, setVisible] = useState(false);
+export default function LobsterMap({ count, setCount }: any) {
+  const [lobsters, setLobsters] = useState<SpotType[]>([]);
 
-  // Pick a random lobster spot
+  // Spawn ONE lobster if:
+  // - we have fewer than 3
+  // - the chosen spot is not already used
   const spawnLobster = () => {
-    const newSpot =
-      lobsterSpots[Math.floor(Math.random() * lobsterSpots.length)];
-    setSpot(newSpot);
-    setVisible(true);
+    setLobsters(prev => {
+      if (prev.length >= 3) return prev; // limit
 
-    // Auto-hide after 2.5 seconds if not clicked
-    setTimeout(() => {
-      setVisible(false);
-    }, 2500);
+      // pick a random spot NOT in use
+      const availableSpots = lobsterSpots.filter(spot =>
+        !prev.some(l => l.top === spot.top && l.left === spot.left)
+      );
+
+      if (availableSpots.length === 0) return prev; // no free spots
+
+      const chosen =
+        availableSpots[Math.floor(Math.random() * availableSpots.length)];
+
+      const newLobster = {
+        ...chosen,
+        id: Date.now() + Math.random(),
+      };
+
+      // auto-remove after 800ms
+      setTimeout(() => {
+        setLobsters(old => old.filter(l => l.id !== newLobster.id));
+      }, 800);
+
+      return [...prev, newLobster];
+    });
   };
 
-  // Spawn lobsters every 4 seconds
+  // Spawn every 700ms (fast & fun)
   useEffect(() => {
-    spawnLobster(); // initial spawn
-    const interval = setInterval(spawnLobster, 4000);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    spawnLobster();
+    const interval = setInterval(spawnLobster, 700);
     return () => clearInterval(interval);
   }, []);
 
-  const handleCatch = () => {
+  const handleCatch = (id: number) => {
     setCount(count + 1);
-    setVisible(false);
+    setLobsters(prev => prev.filter(l => l.id !== id));
   };
 
   return (
-<div className="relative w-full max-w-xl mx-auto aspect-[2/1] overflow-hidden rounded-xl shadow-lg">
+    <div className="relative w-full max-w-xl mx-auto aspect-[2/1] overflow-hidden rounded-xl shadow-lg">
+      <div className="absolute inset-0 ocean-waves"></div>
 
-{/* Ocean wave background */}
-<div className="absolute inset-0 ocean-waves"></div>
+      <img
+        src={peiMap}
+        alt="PEI Map"
+        className="relative z-10 w-full h-full object-contain pointer-events-none"
+      />
 
-{/* PEI map */}
-<img
-  src={peiMap}
-  alt="PEI Map"
-  className="relative z-10 w-full h-full object-contain pointer-events-none"
-/>
-
-{/* Lobster icon */}
-{visible && spot && (
-  <div
-    className="absolute z-20 text-5xl cursor-pointer animate-bounce"
-    style={{
-      top: spot.top,
-      left: spot.left,
-      transform: "translate(-50%, -50%)",
-    }}
-    onClick={handleCatch}
-  >
-    🦞
-  </div>
-)}
-</div>
-
+      {lobsters.map(l => (
+        <div
+          key={l.id}
+          className="absolute z-20 text-5xl cursor-pointer animate-bounce"
+          style={{
+            top: l.top,
+            left: l.left,
+            transform: "translate(-50%, -50%)",
+          }}
+          onClick={() => handleCatch(l.id)}
+        >
+          🦞
+        </div>
+      ))}
+    </div>
   );
 }
+
