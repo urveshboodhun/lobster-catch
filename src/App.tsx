@@ -52,6 +52,8 @@ function App() {
 
       {/* FOOTER */}
       <p className="mt-6 text-sm text-gray-500">Click the lobster before it disappears!</p>
+      <p className="mt-6 text-sm text-gray-500">If you get lucky, you might catch a blue lobster.</p>
+      <br></br>
       <p className="text-sm text-gray-500">Made with 🦞 in PEI 🇨🇦</p>
 
       {/* GAME OVER POPUP */}
