@@ -46,8 +46,8 @@ export default function LobsterMap({
       const chosen =
         availableSpots[Math.floor(Math.random() * availableSpots.length)];
 
-      // 2% chance of blue lobster
-      const isRare = Math.random() < 0.10;
+      // 7% chance of blue lobster
+      const isRare = Math.random() < 0.07;
 
       const newLobster = {
         ...chosen,
