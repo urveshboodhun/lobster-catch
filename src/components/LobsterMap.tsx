@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import peiMap from "../assets/pei-map.png";
+import blueLobster from "../assets/lobster-blue-rare.png";
 
 interface SpotType {
   top: string;
   left: string;
   id: number;
+  rare?: boolean; // BLUE lobster flag
 }
 
 const lobsterSpots = [
@@ -40,15 +42,20 @@ export default function LobsterMap({
 
       if (availableSpots.length === 0) return prev;
 
+      // choose random spot
       const chosen =
         availableSpots[Math.floor(Math.random() * availableSpots.length)];
+
+      // 2% chance of blue lobster
+      const isRare = Math.random() < 0.10;
 
       const newLobster = {
         ...chosen,
         id: Date.now() + Math.random(),
+        rare: isRare,
       };
 
-      // disappear fast
+      // auto-disappear after 0.8s
       setTimeout(() => {
         setLobsters((old) => old.filter((l) => l.id !== newLobster.id));
       }, 800);
@@ -83,7 +90,7 @@ export default function LobsterMap({
       {lobsters.map((l) => (
         <div
           key={l.id}
-          className="absolute z-20 text-5xl cursor-pointer animate-bounce"
+          className="absolute z-20 cursor-pointer animate-bounce"
           style={{
             top: l.top,
             left: l.left,
@@ -91,10 +98,17 @@ export default function LobsterMap({
           }}
           onClick={() => handleCatch(l.id)}
         >
-          🦞
+          {l.rare ? (
+            <img
+              src={blueLobster}
+              alt="Rare Blue Lobster"
+              className="w-14 h-14 drop-shadow-xl"
+            />
+          ) : (
+            <span className="text-5xl">🦞</span>
+          )}
         </div>
       ))}
     </div>
   );
 }
-
