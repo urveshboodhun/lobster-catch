@@ -17,22 +17,28 @@ const lobsterSpots = [
   { top: "22%", left: "48%" },
 ];
 
-export default function LobsterMap({ count, setCount }: any) {
+export default function LobsterMap({
+  count,
+  setCount,
+  running,
+}: {
+  count: number;
+  setCount: (n: number) => void;
+  running: boolean;
+}) {
   const [lobsters, setLobsters] = useState<SpotType[]>([]);
 
-  // Spawn ONE lobster if:
-  // - we have fewer than 3
-  // - the chosen spot is not already used
   const spawnLobster = () => {
-    setLobsters(prev => {
-      if (prev.length >= 3) return prev; // limit
+    if (!running) return;
 
-      // pick a random spot NOT in use
-      const availableSpots = lobsterSpots.filter(spot =>
-        !prev.some(l => l.top === spot.top && l.left === spot.left)
+    setLobsters((prev) => {
+      if (prev.length >= 3) return prev;
+
+      const availableSpots = lobsterSpots.filter(
+        (spot) => !prev.some((l) => l.top === spot.top && l.left === spot.left)
       );
 
-      if (availableSpots.length === 0) return prev; // no free spots
+      if (availableSpots.length === 0) return prev;
 
       const chosen =
         availableSpots[Math.floor(Math.random() * availableSpots.length)];
@@ -42,26 +48,26 @@ export default function LobsterMap({ count, setCount }: any) {
         id: Date.now() + Math.random(),
       };
 
-      // auto-remove after 800ms
+      // disappear fast
       setTimeout(() => {
-        setLobsters(old => old.filter(l => l.id !== newLobster.id));
+        setLobsters((old) => old.filter((l) => l.id !== newLobster.id));
       }, 800);
 
       return [...prev, newLobster];
     });
   };
 
-  // Spawn every 700ms (fast & fun)
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     spawnLobster();
     const interval = setInterval(spawnLobster, 700);
     return () => clearInterval(interval);
-  }, []);
+  }, [running]);
 
   const handleCatch = (id: number) => {
+    if (!running) return;
     setCount(count + 1);
-    setLobsters(prev => prev.filter(l => l.id !== id));
+    setLobsters((prev) => prev.filter((l) => l.id !== id));
   };
 
   return (
@@ -74,7 +80,7 @@ export default function LobsterMap({ count, setCount }: any) {
         className="relative z-10 w-full h-full object-contain pointer-events-none"
       />
 
-      {lobsters.map(l => (
+      {lobsters.map((l) => (
         <div
           key={l.id}
           className="absolute z-20 text-5xl cursor-pointer animate-bounce"
