@@ -60,7 +60,11 @@ function App() {
           <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-xs text-center">
 
             <h2 className="text-3xl font-bold text-red-600 mb-3">⏰ Time's Up!</h2>
-            <p className="text-xl mb-6">Score: {count}</p>
+            <p className="text-xl mb-6">
+              {count === 0 && "You didn’t catch any lobster! Must’ve scared ’em all back to the gulf!"}
+              {count > 0 && count <= 5 && `Nice haul — enough lobster for a proper feed! (${count})`}
+              {count > 5 && `Holy mackerel! You're haulin' ’em in like a real Islander! (${count})`}
+            </p>
 
             <button
               onClick={restartGame}
