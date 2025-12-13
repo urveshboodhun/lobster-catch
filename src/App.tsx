@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import LobsterMap from "./components/LobsterMap";
 
 function App() {
+  // lobster caught counter
   const [count, setCount] = useState(0);
+  // timer initialises to 20s game
   const [timeLeft, setTimeLeft] = useState(20);
+  // flags for whether timer is running/game is over
   const [running, setRunning] = useState(true);
   const [gameOver, setGameOver] = useState(false);
 
@@ -22,6 +25,7 @@ function App() {
     return () => clearTimeout(t);
   }, [timeLeft, running]);
 
+  // restartGame will reset counter, timer, timer running and game over flags
   const restartGame = () => {
     setCount(0);
     setTimeLeft(20);
