@@ -38,8 +38,11 @@ function App() {
 
       {/* TITLE */}
       <h1 className="text-4xl font-bold text-red-600 mb-4 text-center">
-        🦞 PEI Lobster Catch Game
+        PEI Lobster Game 🦞
       </h1>
+      <p className="text-center text-gray-600 mb-6">
+        Play a fun browser game inspired by Prince Edward Island lobster fishing.
+      </p>
 
       {/* SCORE */}
       <p className="text-2xl mb-2">
